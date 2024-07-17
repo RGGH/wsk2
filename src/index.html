@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Score Update</title>
+</head>
+<body>
+    <h1>Live Football Score</h1>
+    <div id="score">Score will be updated here...</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const ws = new WebSocket('ws://127.0.0.1:8080');
+
+            ws.onopen = function() {
+                console.log('Connected to WebSocket server');
+            };
+
+            ws.onmessage = function(event) {
+                console.log('Received update:', event.data);
+                // Update the score display on the web page
+                const scoreElement = document.getElementById('score');
+                if (scoreElement) {
+                    scoreElement.innerText = event.data;
+                } else {
+                    console.error('Score element not found in the DOM.');
+                }
+            };
+
+            ws.onclose = function() {
+                console.log('Disconnected from WebSocket server');
+            };
+        });
+    </script>
+</body>
+</html>
+

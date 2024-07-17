@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Football Scores</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+            background-image: url('football.png'); /* Background image */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-position: center center; /* Center the image horizontally and vertically */
+        }
+        .score-board {
+            background: rgba(255, 255, 255, 0.9); /* Adjust transparency if needed */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="score-board">
+        <h1>Live Football Scores</h1>
+        <div id="score" class="score">Loading...</div>
+    </div>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const ws = new WebSocket('ws://127.0.0.1:8080');
+
+        ws.onopen = function() {
+            console.log('Connected to WebSocket server');
+        };
+
+        ws.onmessage = function(event) {
+            console.log('Received update:', event.data);
+            document.getElementById('score').innerText = event.data;
+        };
+
+        ws.onclose = function() {
+            console.log('Disconnected from WebSocket server');
+            document.getElementById('score').innerText = 'Disconnected';
+        };
+    </script>
+</body>
+</html>
+
